@@ -6,17 +6,17 @@ from mysql.connector import connection, connect
 from os import getenv
 from typing import List, Tuple, Union
 
+
 PII_FIELDS = ('name', 'email', 'phone', 'ssn', 'password')
 
 
 def filter_datum(fields: Union[List, Tuple], redaction: str,
                  message: str, separator: str) -> str:
     '''returns the log message obfuscated'''
-    message_list = message.split(separator)
+    m = message.split(separator)
     for i in fields:
-        message_list = [re.sub(i + '=.*', i + '=' + redaction,
-                               j) for j in message_list]
-    return separator.join(message_list)
+        m = [re.sub(i + '=.*', i + '=' + redaction, j) for j in m]
+    return separator.join(m)
 
 
 class RedactingFormatter(logging.Formatter):
@@ -28,6 +28,7 @@ class RedactingFormatter(logging.Formatter):
     SEPARATOR = ";"
 
     def __init__(self, fields: Union[List, Tuple]):
+        '''Initialize formatter'''
         super(RedactingFormatter, self).__init__(self.FORMAT)
         self.fields = fields
 
@@ -58,7 +59,7 @@ def get_db() -> connection.MySQLConnection:
     host = getenv('PERSONAL_DATA_DB_HOST', 'localhost')
     db_name = getenv('PERSONAL_DATA_DB_NAME')
 
-    db = connect(username=username, password=password,
+    db = connect(user=username, password=password,
                  host=host, database=db_name)
     return db
 
