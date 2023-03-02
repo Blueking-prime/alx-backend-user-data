@@ -10,7 +10,7 @@ from typing import List, Tuple, Union
 PII_FIELDS = ('name', 'email', 'phone', 'ssn', 'password')
 
 
-def filter_datum(fields: Union[List, Tuple], redaction: str,
+def filter_datum(fields: Union[List[str], Tuple[str]], redaction: str,
                  message: str, separator: str) -> str:
     '''returns the log message obfuscated'''
     m = message.split(separator)
