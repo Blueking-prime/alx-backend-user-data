@@ -4,13 +4,13 @@ import re
 import logging
 from mysql.connector import connection, connect
 from os import getenv
-from typing import List, Tuple, Union
+from typing import List, Union
 
 
 PII_FIELDS = ('name', 'email', 'phone', 'ssn', 'password')
 
 
-def filter_datum(fields: Union[List[str], Tuple[str]], redaction: str,
+def filter_datum(fields: List[str], redaction: str,
                  message: str, separator: str) -> str:
     '''returns the log message obfuscated'''
     m = message.split(separator)
@@ -27,7 +27,7 @@ class RedactingFormatter(logging.Formatter):
     FORMAT = "[HOLBERTON] %(name)s %(levelname)s %(asctime)-15s: %(message)s"
     SEPARATOR = ";"
 
-    def __init__(self, fields: Union[List, Tuple]):
+    def __init__(self, fields: List[str]):
         '''Initialize formatter'''
         super(RedactingFormatter, self).__init__(self.FORMAT)
         self.fields = fields
