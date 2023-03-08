@@ -64,7 +64,6 @@ class BasicAuth(Auth):
                 return user
             else:
                 return None
-        return None
 
     def current_user(self, request=None) -> TypeVar('User'):
         '''retrieves the User instance for a request'''
