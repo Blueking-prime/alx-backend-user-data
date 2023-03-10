@@ -1,11 +1,8 @@
 #!/usr/bin/env python3
 '''manage the API authentication'''
-from flask import request
 from uuid import uuid4
 from models.user import User
 from api.v1.auth.auth import Auth
-from base64 import b64decode
-from typing import Tuple, TypeVar
 
 
 class SessionAuth(Auth):
@@ -35,7 +32,8 @@ class SessionAuth(Auth):
     def destroy_session(self, request=None):
         '''deletes the user session / logout'''
         if request:
-            if session_id := self.session_cookie(request):
+            session_id = self.session_cookie(request)
+            if session_id:
                 if self.user_id_for_session_id(session_id):
                     self.user_id_by_session_id.pop(session_id)
                     return True
